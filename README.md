@@ -14,4 +14,4 @@
 
 <br />
 
-I'm [Seth McClimans](https://sethmcclimans.net/),a business student who wants to utilize code to solve real business problems. In school, lots of macro concepts are taught without any solutions that provide stakeholders with long term benefit, therefore I want to try to make it easier for businesses to utilize technologies for the long term. Check out some of my projects!
+I'm [Seth McClimans](https://sethmcclimans.net/), a business student who wants to utilize code to solve real business problems. In school, lots of macro concepts are taught without any solutions that provide stakeholders with long term benefit, therefore I want to try to make it easier for businesses to utilize technologies for the long term. Check out some of my projects!
