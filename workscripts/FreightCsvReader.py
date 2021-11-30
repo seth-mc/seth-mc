@@ -46,14 +46,14 @@ class UpsReader:
                 # if they are the same letter
                 else:
                     sol[r,c] = sol[r-1,c-1]
-        print(sol)    
+   
         # return
         if len(target) > len(source):
             pctg = abs((len(target) - sol[-1,-1])) / len(target)
         else:
             pctg = abs((len(source) - sol[-1,-1])) / len(source)
 
-        print(pctg)
+        return pctg
 
     def get_key_info(self):
 
