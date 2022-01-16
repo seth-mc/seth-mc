@@ -14,4 +14,4 @@
 
 <br />
 
-I'm [Seth McClimans](https://sethmcclimans.net/), a business student who wants to utilize code to solve real business problems. In school, I learn lots of macro-business concepts without any solutions that provide practical, long-term benefit. I want to try to make it easier for businesses to utilize technology. I am interested in all of the "buzzwords" :D – machine learning (active learning, transfer learning), fintech, blockchain, and crypto. Check out some of my projects!
+I'm [Seth McClimans](https://sethmcclimans.net/), a business student who wants to utilize code to solve real business problems. In school, I learn lots of macro-business concepts without any solutions that provide practical, long-term benefit. Check out some of my projects below!
