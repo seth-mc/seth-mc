@@ -6,7 +6,7 @@
 <a href="https://www.linkedin.com/in/seth-mcclimans/">
   <img align="left" alt="Seth's LinkedIn" width="22px" src="https://raw.githubusercontent.com/peterthehan/peterthehan/master/assets/linkedin.svg" />
 </a>
-<a href="https://open.spotify.com/user/crackawhore8">
+<a href="https://open.spotify.com/user/31p3syrdn7ahorhviodokzype5xq">
   <img align="left" alt="Seth's Spotify" width="22px" src="https://raw.githubusercontent.com/peterthehan/peterthehan/master/assets/spotify.svg" />
 </a>
 
