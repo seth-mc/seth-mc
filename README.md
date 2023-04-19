@@ -12,4 +12,4 @@
 
 <br />
 
-I'm [Seth McClimans](https://sethmcclimans.net/), I started coding to automate my most redundant tasks, and am now using it to build MVPs for my first businesses. I started with Python, HTML/CSS, and now code mainly in JavaScript, specifically in React.
+I'm [Seth McClimans](https://sethmcclimans.net/), I started coding to automate my most redundant tasks, and am now using it to build MVPs for my first businesses. I started with Python + HTML/CSS, now coding mainly in JavaScript (specifically with React).
