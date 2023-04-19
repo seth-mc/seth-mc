@@ -12,4 +12,4 @@
 
 <br />
 
-I'm [Seth McClimans](https://sethmcclimans.net/), a business student who wants to utilize code to solve real business problems. Check out some of my projects below!
+I'm [Seth McClimans](https://sethmcclimans.net/), I started coding to automate my most redundant tasks, and am now using it to build MVPs for my first businesses. I started with Python, HTML/CSS, and now code mainly in JavaScript, specifically in React.
