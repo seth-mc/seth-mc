@@ -1,15 +1,2 @@
-### Hey! <img src="https://media.giphy.com/media/hvRJCLFzcasrR4ia7z/giphy.gif" width="25px">
-
-<a href="https://twitter.com/seth_mcc">
-  <img align="left" alt="Seth McClimans | Twitter" width="22px" src="https://raw.githubusercontent.com/peterthehan/peterthehan/master/assets/twitter.svg" />
-</a>
-<a href="https://www.linkedin.com/in/seth-mcclimans/">
-  <img align="left" alt="Seth's LinkedIn" width="22px" src="https://raw.githubusercontent.com/peterthehan/peterthehan/master/assets/linkedin.svg" />
-</a>
-
-
-![](https://visitor-badge.glitch.me/badge?page_id=seth-mc.seth_mc)
-
-<br />
-
-I'm [Seth McClimans](https://sethmcclimans.net/), I started coding to automate my most redundant tasks, and am now using it to build MVPs for my first businesses. I started with Python + HTML/CSS, now coding mainly in JavaScript (specifically with React).
+### I go click clack on my keyboard and it does things for me. 
+Building a few internet businesses these days, graduated from business but self-taught in programming. Let's get this bread.
