@@ -1,108 +1,117 @@
 import warnings
-
-# filter updated python warning
 warnings.filterwarnings("ignore", category=UserWarning)
 
 import time
-from threading import Thread
+import threading
 from pynput import keyboard
-from pynput.mouse import Listener
-import os
-import sys
 import re
 import pyperclip
+from queue import Queue
 
-
-def program():  
-    def on_press(key):
-
-        if str(key) == 'Key.esc':  # makes escape key an actual thing
-            main.status = 'pause'
-            user_input = input('\nProgram paused, would you like to continue? (y/n) ')
-            while True:
-                if user_input == 'y':
-                    main.status = 'run'
-                elif user_input == 'n':
-                    main.status = 'exit'
-                    exit()
-                else:
-                    user_input = input('Incorrect input, try either "y" or "n" ')
-
-
-        if 'char' in dir(key):  # looks for the "v" key being pressed
-            if key.char == 'v':
-                try:
-                    pyperclip.copy(allstuff[0])  # copies first list item
-                    print("", end="\n{} Items Left.".format(len(allstuff) - 1))
-                    allstuff.pop(0)  # pops first list item
-                except IndexError:  # occurs when you run out of things to paste
-                    user_input = input(
-                        '\nProgram paused, would you like to continue? (y/n) ')
-                    while True:
-                        if user_input == 'y':
-                            main.status = 'run'
-                        elif user_input == 'n':
-                            main.status = 'exit'
-                            exit()
-                        else:
-                            user_input = input('Incorrect input, try either "y" or "n" ')
-
-
-
-    with keyboard.Listener(on_press=on_press) as listener:
-        listener.join()
-
-
-def main():  # the 'heart' (main) of the program
-    main.status = 'run'
-
-    while True:
-        time.sleep(1)
-
-        while main.status == 'pause':
-            time.sleep(1)
-
-        if main.status == 'exit':
-            print('Main program closing')
-            break
-
-print('\nRAW:')  # user input that accepts multilines
-lines = []
-while True:
-    line = input()
-    if line:
-        lines.append(line)
-    else:
-        break
-raw = '\n'.join(lines)
-
-
-
-user_input = input('Want to split or REGEX? \n')  # two options
-while True:
-    if user_input.lower() == 'regex':  # REGEX: finds it using your inputted regex formula
-        regex = input('REGEX formula: \n')
-        stuff = re.compile(r'{}'.format(regex))
-        allstuff = stuff.findall(raw)
-        if not allstuff:
-            print("ERROR: Nothing Found.")
-        else:
-            pyperclip.copy(allstuff[0])
-        break
-
-    elif user_input.lower() == 'split':  # SPLIT: splits all items by common character
-        sep = input('SEPARTOR: \n')
-        allstuff = raw.split(sep)
-        pyperclip.copy(allstuff[0])
-        break
-    else:
-        user_input = input('Incorrect input, try either "split" or "regex" ')
-        continue
+class ClipboardManager:
+    def __init__(self):
+        self.allstuff = []
+        self.status = 'run'
+        self.command_queue = Queue()
+        self.lock = threading.Lock()
     
+    def on_press(self, key):
+        if key == keyboard.Key.esc:
+            self.command_queue.put('pause')
+            return False  # Stop listener
+        
+        if hasattr(key, 'char') and key.char == 'v':
+            with self.lock:
+                if self.allstuff:
+                    pyperclip.copy(self.allstuff[0])
+                    print(f"\n{len(self.allstuff) - 1} Items Left.", end='', flush=True)
+                    self.allstuff.pop(0)
+                else:
+                    print("\nNo more items to paste!", flush=True)
+                    self.command_queue.put('empty')
+                    return False  # Stop listener
+    
+    def start_listener(self):
+        with keyboard.Listener(on_press=self.on_press) as listener:
+            listener.join()
+    
+    def run(self):
+        # Get user input first
+        print('\nRAW:')
+        lines = []
+        while True:
+            line = input()
+            if line:
+                lines.append(line)
+            else:
+                break
+        raw = '\n'.join(lines)
+        
+        # Process input
+        while True:
+            user_input = input('Want to split or REGEX? \n').lower()
+            if user_input == 'regex':
+                regex = input('REGEX formula: \n')
+                pattern = re.compile(regex)
+                self.allstuff = pattern.findall(raw)
+                if not self.allstuff:
+                    print("ERROR: Nothing Found.")
+                    return
+                break
+            elif user_input == 'split':
+                sep = input('SEPARATOR: \n')
+                self.allstuff = raw.split(sep)
+                break
+            else:
+                print('Incorrect input, try either "split" or "regex"')
+        
+        # Copy first item
+        with self.lock:
+            if self.allstuff:
+                pyperclip.copy(self.allstuff[0])
+                print(f"Ready! {len(self.allstuff)} items loaded.")
+        
+        # Main loop
+        while self.status == 'run':
+            # Start keyboard listener in a separate thread
+            listener_thread = threading.Thread(target=self.start_listener)
+            listener_thread.start()
+            listener_thread.join()  # Wait for listener to finish
+            
+            # Check if we need to handle commands
+            if not self.command_queue.empty():
+                command = self.command_queue.get()
+                
+                if command == 'pause':
+                    user_input = input('\nProgram paused, would you like to continue? (y/n) ')
+                    if user_input.lower() == 'n':
+                        self.status = 'exit'
+                        break
+                    # If 'y', restart the listener
+                    
+                elif command == 'empty':
+                    user_input = input('\nNo more items. Add more items? (y/n) ')
+                    if user_input.lower() == 'n':
+                        self.status = 'exit'
+                        break
+                    elif user_input.lower() == 'y':
+                        # Allow adding more items
+                        print('\nAdd more items (empty line to finish):')
+                        lines = []
+                        while True:
+                            line = input()
+                            if line:
+                                lines.append(line)
+                            else:
+                                break
+                        if lines:
+                            new_raw = '\n'.join(lines)
+                            # Use the same processing method as before
+                            # You might want to remember the last used method
+                            with self.lock:
+                                self.allstuff.extend(new_raw.split('\n'))
+                            print(f"Added {len(lines)} new items.")
 
-Thread(target=main).start()
-Thread(target=program).start()
-
-
-
-
+if __name__ == "__main__":
+    manager = ClipboardManager()
+    manager.run()
